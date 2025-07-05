@@ -11,8 +11,8 @@ from handlers.face_handler import (
 )
 from handlers.voice_handler import predict_from_audio
 
-# ✅ Correct _name_ here
-app = Flask(_name_)
+# ✅ Correct __name__ here
+app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend access
 
 # Load face analysis models once at startup
@@ -79,6 +79,6 @@ def health_check():
     """Health check endpoint"""
     return jsonify({'status': 'healthy', 'message': 'Voice analysis server is running'})
 
-# ✅ Correct _name_ and _main_ check
-if _name_ == '_main_':
+# ✅ Correct __name__ and __main__ check
+if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
