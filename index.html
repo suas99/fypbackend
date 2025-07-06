@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Mental Health Analysis System</h1>
+        
+        <ul class="nav nav-tabs" id="analysisTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="face-tab" data-bs-toggle="tab" data-bs-target="#face" type="button" role="tab">Face Analysis</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="voice-tab" data-bs-toggle="tab" data-bs-target="#voice" type="button" role="tab">Voice Analysis</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="handwriting-tab" data-bs-toggle="tab" data-bs-target="#handwriting" type="button" role="tab">Handwriting Analysis</button>
+            </li>
+        </ul>
+        
+        <div class="tab-content p-3 border border-top-0 rounded-bottom" id="analysisTabContent">
+            <!-- Face Analysis Tab -->
+            <div class="tab-pane fade show active" id="face" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Face Analysis</h3>
+                        <p>Upload an image or use your webcam to analyze facial expressions.</p>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="faceInputType" id="faceStatic" value="static" checked>
+                                <label class="form-check-label" for="faceStatic">Upload Image</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="faceInputType" id="faceRealtime" value="realtime">
+                                <label class="form-check-label" for="faceRealtime">Use Webcam</label>
+                            </div>
+                        </div>
+                        
+                        <div id="faceStaticInput">
+                            <div class="mb-3">
+                                <label for="faceImageUpload" class="form-label">Upload Face Image</label>
+                                <input class="form-control" type="file" id="faceImageUpload" accept="image/*">
+                            </div>
+                            <button class="btn btn-primary" id="analyzeFaceBtn">Analyze Face</button>
+                        </div>
+                        
+                        <div id="faceRealtimeInput" style="display: none;">
+                            <div class="mb-3">
+                                <button class="btn btn-primary" id="startWebcamBtn">Start Webcam</button>
+                                <button class="btn btn-danger" id="stopWebcamBtn" style="display: none;">Stop Webcam</button>
+                                <button class="btn btn-success" id="captureFrameBtn" style="display: none;">Capture & Analyze</button>
+                            </div>
+                            <video id="webcamVideo" width="320" height="240" style="display: none;"></video>
+                            <canvas id="captureCanvas" width="320" height="240" style="display: none;"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div id="faceResults" class="results-container">
+                            <h4>Results</h4>
+                            <div id="faceResultContent" class="result-content">
+                                <p class="text-muted">No analysis performed yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Voice Analysis Tab -->
+            <div class="tab-pane fade" id="voice" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Voice Analysis</h3>
+                        <p>Record your voice or upload an audio file for analysis.</p>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="voiceInputType" id="voiceUpload" value="upload" checked>
+                                <label class="form-check-label" for="voiceUpload">Upload Audio</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="voiceInputType" id="voiceRecord" value="record">
+                                <label class="form-check-label" for="voiceRecord">Record Audio</label>
+                            </div>
+                        </div>
+                        
+                        <div id="voiceUploadInput">
+                            <div class="mb-3">
+                                <label for="voiceAudioUpload" class="form-label">Upload Audio File</label>
+                                <input class="form-control" type="file" id="voiceAudioUpload" accept="audio/*">
+                            </div>
+                            <button class="btn btn-primary" id="analyzeVoiceBtn">Analyze Voice</button>
+                        </div>
+                        
+                        <div id="voiceRecordInput" style="display: none;">
+                            <div class="mb-3">
+                                <button class="btn btn-primary" id="startRecordingBtn">Start Recording</button>
+                                <button class="btn btn-danger" id="stopRecordingBtn" style="display: none;">Stop Recording</button>
+                                <button class="btn btn-success" id="analyzeRecordingBtn" style="display: none;">Analyze Recording</button>
+                            </div>
+                            <div id="recordingStatus" class="text-muted"></div>
+                            <audio id="audioPlayback" controls style="display: none;"></audio>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div id="voiceResults" class="results-container">
+                            <h4>Results</h4>
+                            <div id="voiceResultContent" class="result-content">
+                                <p class="text-muted">No analysis performed yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Handwriting Analysis Tab -->
+            <div class="tab-pane fade" id="handwriting" role="tabpanel">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Handwriting Analysis</h3>
+                        <p>Upload an image of handwriting for analysis.</p>
+                        
+                        <div class="mb-3">
+                            <label for="handwritingImageUpload" class="form-label">Upload Handwriting Image</label>
+                            <input class="form-control" type="file" id="handwritingImageUpload" accept="image/*">
+                        </div>
+                        <button class="btn btn-primary" id="analyzeHandwritingBtn">Analyze Handwriting</button>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div id="handwritingResults" class="results-container">
+                            <h4>Results</h4>
+                            <div id="handwritingResultContent" class="result-content">
+                                <p class="text-muted">No analysis performed yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
